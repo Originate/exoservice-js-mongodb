@@ -2,7 +2,7 @@
   "name": "{{serviceRole}}",
   "version": "0.0.1",
   "dependencies": {
-    "exoservice": "0.22.1",
+    "exoservice": "0.24.0",
     "get-env": "0.5.10",
     "mongodb": "2.2.28",
     "nitroglycerin": "1.1.2"
