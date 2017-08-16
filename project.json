@@ -1,6 +1,6 @@
 {
   "serviceRole": "mongo-service",
-  "serviceType": "mongo-service-type",
+  "serviceType": "mongo-service",
   "description": "",
   "author": "",
   "modelName": "mongo",
