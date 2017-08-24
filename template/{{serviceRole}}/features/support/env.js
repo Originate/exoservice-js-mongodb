@@ -8,20 +8,20 @@ const defineSupportCode = require('cucumber').defineSupportCode,
 var db = null
 const getDb = (done) => {
   if (db) return done(db)
-  MongoClient.connect("mongodb://localhost:27017/exosphere-{{serviceRole}}-test", N( (mongoDb) => {
+  MongoClient.connect(`mongodb://${process.env.MONGO}:27017/exosphere-{{serviceRole}}-test`, N( (mongoDb) => {
     db = mongoDb
     done(db)
   }))
 }
 
 
-defineSupportCode(function({Before, After, setDefaultTimeout, setWorldConstructor, registerHandler}) {
+defineSupportCode(function({Before, After, AfterAll, setDefaultTimeout, setWorldConstructor}) {
 
   setDefaultTimeout(1000)
   setWorldConstructor(World)
 
 
-  Before( function(_scenario, done) {
+  Before(function(_scenario, done) {
     getDb( (db) => {
       db.collection('{{modelName}}s').drop(function(err) {
         // ignore errors here, since we are only cleaning up the test database
@@ -32,13 +32,14 @@ defineSupportCode(function({Before, After, setDefaultTimeout, setWorldConstructo
   })
 
 
-  After(function() {
-    this.exocom && this.exocom.close()
-    this.process && this.process.close()
+  After(function(_scenario, done) {
+    this.process.close(() => {
+      this.exocom.close(done)
+    })
   })
 
 
-  registerHandler('AfterFeatures', (_event, done) => {
+  AfterAll(function(_scenario, done) {
     getDb( (db) => {
       db.collection('{{modelName}}s').drop()
       db.close(function(err, result){
@@ -48,4 +49,4 @@ defineSupportCode(function({Before, After, setDefaultTimeout, setWorldConstructo
     })
   })
 
-});
+})
