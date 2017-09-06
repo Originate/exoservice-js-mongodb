@@ -1,3 +1,7 @@
+# 0.26.1 (2017-09-06)
+
+* Update exoservice / exocom-mock to v0.26.1
+
 # 0.24.2 (2017-08-24)
 
 * add missing dependency, update dependencies

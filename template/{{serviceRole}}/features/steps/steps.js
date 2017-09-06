@@ -1,15 +1,18 @@
 const {expect} = require('chai'),
-      defineSupportCode = require('cucumber').defineSupportCode,
+      {defineSupportCode} = require('cucumber'),
       dimConsole = require('dim-console'),
       ExoComMock = require('exocom-mock'),
-      ExoService = require('exoservice'),
+      fs = require('fs'),
       jsDiff = require('jsdiff-console'),
       lowercaseKeys = require('lowercase-keys'),
       N = require('nitroglycerin'),
+      ObservableProcess = require('observable-process')
       portReservation = require('port-reservation'),
       request = require('request'),
-      wait = require('wait')
+      wait = require('wait'),
+      yaml = require('js-yaml')
 
+const serviceConfig = yaml.safeLoad(fs.readFileSync('service.yml'), 'utf8')
 
 defineSupportCode(function({Given, When, Then}) {
 
@@ -23,11 +26,16 @@ defineSupportCode(function({Given, When, Then}) {
 
 
   Given(/^an instance of this service$/, function(done) {
-    this.process = new ExoService({ role: '{{serviceRole}}',
-                                    exocomHost: 'localhost',
-                                    exocomPort: this.exocomPort })
-    this.process.connect()
-    this.process.on('online', () => wait.wait(10, done))
+    this.process = new ObservableProcess(serviceConfig.startup.command, {
+      env: {
+        EXOCOM_PORT: this.exocomPort,
+        EXOCOM_HOST: 'localhost',
+        ROLE: serviceConfig.type,
+      },
+      stdout: false,
+      stderr: false,
+    })
+    this.process.wait(serviceConfig.startup['online-text'], done)
   })
 
 

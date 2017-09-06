@@ -1,12 +1,13 @@
 const clone = require('clone'),
       env = require('get-env')('test'),
       {MongoClient, ObjectID} = require('mongodb'),
-      N = require('nitroglycerin')
+      N = require('nitroglycerin'),
+      {bootstrap} = require('exoservice')
 
 
 var collection = null
 
-module.exports = {
+bootstrap({
 
   beforeAll: (done) => {
     const mongoDbName = `exosphere-{{serviceRole}}-${env}`
@@ -132,7 +133,7 @@ module.exports = {
     }))
   }
 
-}
+})
 
 
 // Helpers

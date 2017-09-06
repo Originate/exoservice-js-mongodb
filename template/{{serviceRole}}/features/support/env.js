@@ -33,9 +33,8 @@ defineSupportCode(function({Before, After, AfterAll, setDefaultTimeout, setWorld
 
 
   After(function(_scenario, done) {
-    this.process.close(() => {
-      this.exocom.close(done)
-    })
+    this.process.kill()
+    this.exocom.close(done)
   })
 
 

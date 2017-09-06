@@ -3,7 +3,7 @@ description: {{description}}
 author: {{author}}
 
 startup:
-  command: node node_modules/exoservice/bin/exo-js
+  command: node src/server.js
   online-text: online at port
 tests: node_modules/cucumber/bin/cucumber.js
 
