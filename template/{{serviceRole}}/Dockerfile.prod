@@ -5,3 +5,4 @@ COPY package.json .
 COPY yarn.lock .
 RUN yarn
 COPY . .
+CMD ["node", "src/server.js"]
