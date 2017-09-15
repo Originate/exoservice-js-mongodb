@@ -1,3 +1,7 @@
+# 0.27.0 (2017-09-14)
+
+* Update to dev/prod dockerfile format
+
 # 0.26.1 (2017-09-06)
 
 * Update exoservice / exocom-mock to v0.26.1
